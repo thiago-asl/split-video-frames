@@ -5,11 +5,7 @@ input_file="${1}"
 short_name="$(basename "${input_file}" | sed 's/\(.*\)\..*/\1/')"
 target_dir="$(pwd)"/target
 
-rm -rfv "${target_dir}" \
+rm -rf "${target_dir}" \
 	&& mkdir -pv "${target_dir}" \
-	&& ffmpeg -i "${input_file}" -t 00:05 "${target_dir}"/"${short_name}"_%05d.png
-
-echo $input_file
-echo $short_name
-echo $target_dir
-echo $(ls -l $target_dir | wc -l)
+	&& ffmpeg -loglevel quiet -i "${input_file}" "${target_dir}"/"${short_name}"_%05d.png \
+	&& echo "Created $(ls -l "${target_dir}" | wc -l) frames."
